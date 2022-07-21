@@ -2,16 +2,11 @@ package com.zemoso.training.springbootproject.controller;
 
 import com.zemoso.training.springbootproject.dto.ItemDto;
 import com.zemoso.training.springbootproject.dto.UserDto;
-import com.zemoso.training.springbootproject.entity.Authority;
-import com.zemoso.training.springbootproject.entity.Item;
 import com.zemoso.training.springbootproject.entity.Order;
-import com.zemoso.training.springbootproject.entity.User;
 import com.zemoso.training.springbootproject.service.ItemService;
 import com.zemoso.training.springbootproject.service.OrderService;
 import com.zemoso.training.springbootproject.service.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,8 +21,6 @@ public class ShopController {
 
     public static final String ITEM_FORM = "item-form";
     public static final String REDIRECT_SHOP_ITEMS_LIST = "redirect:/shop/itemsList";
-    @Autowired
-    private ModelMapper modelMapper;
 
 
     private ItemService itemService;
@@ -35,6 +28,7 @@ public class ShopController {
     private UserService userService;
 
     private OrderService orderService;
+
 
     @Autowired
     public ShopController(ItemService itemService, UserService userService, OrderService orderService) {
@@ -76,8 +70,7 @@ public class ShopController {
 
     @GetMapping("/showFormForUpdateItem")
     public String updateItem(@RequestParam("itemId") int itemId, Model model){
-        Item item = itemService.findById(itemId);
-        ItemDto itemDto = modelMapper.map(item,ItemDto.class);
+        ItemDto itemDto = itemService.findByIdDto(itemId);
         model.addAttribute("item",itemDto);
         return ITEM_FORM;
     }
@@ -87,8 +80,7 @@ public class ShopController {
         if(bindingResult.hasErrors()){
             return ITEM_FORM;
         }
-        Item item = modelMapper.map(itemDto,Item.class);
-        itemService.saveItem(item);
+        itemService.saveItemDto(itemDto);
         return REDIRECT_SHOP_ITEMS_LIST;
     }
 
@@ -104,37 +96,20 @@ public class ShopController {
 
     @GetMapping("/addItemToUser")
     public String addItemToUser(@RequestParam("userName") String userName, @RequestParam("itemId") int itemId, Model model){
-        User user = userService.findUserByName(userName);
-        Item item = itemService.findById(itemId);
-        Order order;
-        Order result= orderService.findOrder(user.getId(),item.getId());
-        if(result == null){
-            order = new Order(user,item,1);
-        }else{
-            order = result;
-            order.increaseQuantity();
-        }
-        item.setQuantity(item.getQuantity()-1);
-        itemService.saveItem(item);
-        orderService.saveOrder(order);
+        orderService.addItemToUser(userName,itemId);
         return REDIRECT_SHOP_ITEMS_LIST;
     }
 
     @GetMapping("/userOrdersList")
     public String userOrderList(@RequestParam("userName") String userName, Model model){
-        User user = userService.findUserByName(userName);
-        List<Order> orders = orderService.getUserOrders(user.getId());
+        List<Order> orders = orderService.userOrdersList(userName);
         model.addAttribute("orders",orders);
         return "view-orders";
     }
 
     @GetMapping("/deleteOrder")
-    public String addItemToUser(@RequestParam("orderId") int orderId, @RequestParam("userName") String userName, Model model){
-        Order order = orderService.findById(orderId);
-        Item item = order.getItem();
-        item.setQuantity(order.getQuantity()+item.getQuantity());
-        itemService.saveItem(item);
-        orderService.deleteById(orderId);
+    public String deleteOrder(@RequestParam("orderId") int orderId, @RequestParam("userName") String userName, Model model){
+        orderService.deleteOrder(orderId);
         return "redirect:/shop/userOrdersList?userName="+userName;
     }
 

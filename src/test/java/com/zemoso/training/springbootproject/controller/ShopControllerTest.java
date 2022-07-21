@@ -2,6 +2,7 @@ package com.zemoso.training.springbootproject.controller;
 
 
 import com.zemoso.training.springbootproject.dto.ItemDto;
+import com.zemoso.training.springbootproject.dto.UserDto;
 import com.zemoso.training.springbootproject.entity.Authority;
 import com.zemoso.training.springbootproject.entity.Item;
 import com.zemoso.training.springbootproject.entity.Order;
@@ -106,15 +107,20 @@ class ShopControllerTest {
                 .andExpect(view().name("item-form"));
     }
 
+
     @Test
-    void showFormForUpdateItem() throws Exception{
-        item = new Item(1,"Polo T Shirt",599,15,"Good qality t-shirt");
-        Mockito.when(itemService.findById(1)).thenReturn(item);
+    void saveItem() throws Exception{
+        itemDto = new ItemDto(5,"T Shirt",599,56,"Branded");
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
-        mockMvc.perform(get("/shop/showFormForUpdateItem").queryParam("itemId","1")).andExpect(status().is(200))
-                .andExpect(view().name("item-form"));
+        mockMvc.perform(post("/shop/saveItem").flashAttr("item",itemDto )).andExpect(status().is(302)).andExpect(view().name("redirect:/shop/itemsList"));
     }
 
+    @Test
+    void saveItemException() throws Exception{
+        itemDto = new ItemDto(5,"T Shirt",599,56,"Branded");
+        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
+        mockMvc.perform(post("/shop/saveItem").flashAttr("itemDto",itemDto )).andExpect(status().is(200)).andExpect(view().name("item-form"));
+    }
 
     @Test
     void deleteItem() throws Exception {

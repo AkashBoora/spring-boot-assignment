@@ -11,7 +11,11 @@ public interface ItemService {
 
     public void saveItem(Item item);
 
+    public void saveItemDto(ItemDto itemDto);
+
     void deleteById(int itemId);
 
     Item findById(int itemId);
+
+    ItemDto findByIdDto(int itemId);
 }

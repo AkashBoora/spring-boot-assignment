@@ -23,6 +23,7 @@
             Home
         </a>
         <a th:href="@{/shop/usersList}"
+           sec:authorize="hasAuthority('ROLE_ADMIN')"
            class="btn btn-primary btn-sm mb-3">
             Back to User List
         </a>

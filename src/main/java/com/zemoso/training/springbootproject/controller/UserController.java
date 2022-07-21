@@ -1,7 +1,6 @@
 package com.zemoso.training.springbootproject.controller;
 
 import com.zemoso.training.springbootproject.dto.UserDto;
-import com.zemoso.training.springbootproject.entity.User;
 import com.zemoso.training.springbootproject.service.ItemService;
 import com.zemoso.training.springbootproject.service.OrderService;
 import com.zemoso.training.springbootproject.service.UserService;
@@ -52,8 +51,7 @@ public class UserController {
         if(bindingResult.hasErrors()){
             return USER_FORM;
         }
-        User user = modelMapper.map(userDto,User.class);
-        userService.saveUser(user);
+        userService.saveUserDto(userDto);
         return "redirect:/shop/home";
     }
 }

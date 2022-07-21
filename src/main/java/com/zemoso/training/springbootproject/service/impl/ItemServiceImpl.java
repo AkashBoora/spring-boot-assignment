@@ -42,6 +42,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public void saveItemDto(ItemDto itemDto) {
+        Item item = modelMapper.map(itemDto,Item.class);
+        saveItem(item);
+    }
+
+    @Override
     public void deleteById(int itemId) {
         itemRepository.deleteById(itemId);
     }
@@ -58,5 +64,11 @@ public class ItemServiceImpl implements ItemService {
             throw new ObjectNotFoundException("Did not find Object for id - "+itemId);
         }
         return item;
+    }
+
+    @Override
+    public ItemDto findByIdDto(int itemId) {
+        Item item = findById(itemId);
+        return modelMapper.map(item,ItemDto.class);
     }
 }

@@ -99,4 +99,12 @@ class UserServiceImplTest {
         verify(userRepository,times(1)).save(user);
 
     }
+
+    @Test
+    void saveUserDto(){
+        user = new User("Akash","dfghj");
+        userDto = modelMapper.map(user,UserDto.class);
+        userServiceImpl.saveUserDto(userDto);
+        verify(userRepository,times(1)).save(any());
+    }
 }

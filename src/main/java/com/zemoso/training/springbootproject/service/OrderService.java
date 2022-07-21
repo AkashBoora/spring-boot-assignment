@@ -7,11 +7,18 @@ import java.util.List;
 public interface OrderService {
     public Order findOrder(int userId, int itemId);
 
-    void saveOrder(Order order);
-
-    public List<Order> getUserOrders(int userId);
+    public void saveOrder(Order order);
 
     public Order findById(int orderId);
 
     public void deleteById(int orderId);
+
+    public void addItemToUser(String userName, int itemId);
+
+    public List<Order> userOrdersList(String userName);
+
+    public List<Order> getUserOrders(int userId);
+
+    public void deleteOrder(int orderId);
+
 }

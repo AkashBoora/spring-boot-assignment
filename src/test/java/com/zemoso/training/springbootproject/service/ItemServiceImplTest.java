@@ -62,8 +62,26 @@ class ItemServiceImplTest {
     }
 
     @Test
+    void findByIdDto(){
+        item = new Item(2,"Polo T shirt",599,15,"A good quality t-shirt");
+        itemDto =modelMapper.map(item,ItemDto.class);
+        doReturn(Optional.of(item))
+                .when(itemRepository)
+                .findById(2);
+        assertEquals(2,itemServiceImpl.findByIdDto(2).getId());
+    }
+
+    @Test
     void saveItem(){
         itemServiceImpl.saveItem(item);
+        verify(itemRepository,times(1)).save(any());
+    }
+
+    @Test
+    void saveItemDto(){
+        item = new Item(2,"Polo T shirt",599,15,"A good quality t-shirt");
+        itemDto = modelMapper.map(item,ItemDto.class);
+        itemServiceImpl.saveItemDto(itemDto);
         verify(itemRepository,times(1)).save(any());
     }
 

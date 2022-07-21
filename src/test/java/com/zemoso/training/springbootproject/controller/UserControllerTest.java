@@ -17,6 +17,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.ArrayList;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -53,6 +55,14 @@ class UserControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/user/accessDenied"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("access-denied"));
+    }
+
+
+    @Test
+    void saveUserException() throws Exception{
+        userDto = new UserDto(0,"username","password",1,authority);
+        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
+        mockMvc.perform(post("/user/saveUser").flashAttr("userDto",userDto )).andExpect(status().is(200)).andExpect(view().name("user-form"));
     }
 
 
