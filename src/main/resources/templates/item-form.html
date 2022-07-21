@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head>
+        <title>Item Form</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet"
+              th:href="@{/css/demo.css}"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    </head>
+
+    <body>
+    <div class="container">
+        <h3 class="center h4 mb-">Item Form</h3>
+        <hr>
+
+        <form action="#"
+              th:action="@{/shop/saveItem}"
+              th:object="${item}"
+              method="POST">
+
+            <!-- Add hidden form field to handle update-->
+            <input type="hidden" th:field="*{id}">
+
+            <input type="text" th:field="*{itemName}" placeholder="Item Name" class="form-control mb-4 col-4"/>
+            <p class="error text-danger" th:if="${#fields.hasErrors('itemName')}" th:errors="*{itemName}"></p>
+
+            <input type="number" th:field="*{itemPrice}" class="form-control mb-4 col-4" placeholder="Item Price">
+            <p class="error text-danger" th:if="${#fields.hasErrors('itemPrice')}" th:errors="*{itemPrice}"></p>
+
+            <input type="number" th:field="*{quantity}" class="form-control mb-4 col-4" placeholder="Quantity">
+            <p class="error text-danger" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></p>
+
+            <input type="text" th:field="*{itemDescription}" class="form-control mb-4 col-4" placeholder="Description">
+
+            <button type="submit" class="btn btn-info col-2">Save</button>
+        </form>
+
+        <hr>
+
+        <a th:href="@{/shop/itemsList}">Back to List</a>
+
+    </div>
+    </body>
+</html>

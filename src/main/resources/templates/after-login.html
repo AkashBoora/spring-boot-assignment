@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head>
+        <title>Fashion Fusion Home</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet"
+              th:href="@{/css/demo.css}"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    </head>
+    <body>
+    <div class="container">
+        <div class="rounded-5 bg-success center" style="margin-left: ($spacer * .25) !important;">
+            <div class="p-4 mb-5 text-white"><h2>Fashion Fusion</h2></div>
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            <h3>Welcome <span th:text="${#authentication.name}"/></h3>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="row" sec:authorize="hasAuthority('ROLE_USER')">
+                    <div class="col center">
+                        <a th:href="@{/shop/itemsList}" class="btn btn-info btn-sm" style="width: 150px;">
+                            Show Items
+                        </a>
+                    </div>
+                    <div class="col center">
+                        <a th:href="@{/shop/userOrdersList(userName=${#authentication.name})}" class="btn btn-danger btn-sm">
+                            View Orders
+                        </a>
+                    </div>
+                    <div class="col center">
+                        <a th:href="@{/logout}" class="btn btn-info btn-sm">
+                            Log Out
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row" sec:authorize="hasAuthority('ROLE_ADMIN')">
+                    <div class="col center">
+                        <a th:href="@{/shop/itemsList}" class="btn btn-info btn-sm" style="width: 150px;">
+                            Show Items
+                        </a>
+                    </div>
+                    <div class="col center">
+                        <a th:href="@{/shop/usersList}" class="btn btn-danger btn-sm">
+                            View Users
+                        </a>
+                    </div>
+                    <div class="col center">
+                        <a th:href="@{/logout}" class="btn btn-info btn-sm">
+                            Log Out
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+    </body>
+</html>

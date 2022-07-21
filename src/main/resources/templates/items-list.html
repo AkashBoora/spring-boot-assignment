@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <title>Items List</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet"
+              th:href="@{/css/demo.css}"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container">
+            <div class="center pt-5">
+                <h3>Items List</h3>
+            </div>
+            <hr>
+            <!-- Add a button-->
+            <a sec:authorize="isAuthenticated()" th:href="@{/shop/loginHome}"
+               class="btn btn-primary btn-sm mb-3">
+                Home
+            </a>
+
+            <a sec:authorize="!(isAuthenticated())" th:href="@{/shop/home}"
+               class="btn btn-primary btn-sm mb-3">
+                Home
+            </a>
+
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')" th:href="@{/shop/showFormForAddItem}"
+               class="btn btn-primary btn-sm mb-3">
+                Add Item
+            </a>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                <tr>
+                    <th>Item Name</th>
+                    <th>Item Price(in Rupees)</th>
+                    <th>Available Quantity</th>
+                    <th>Description</th>
+                    <th sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" >Action</th>
+                </tr>
+                </thead>
+                <tbody th:each="item : ${items}">
+                    <div th:if="${item.quantity} > 0">
+                        <td th:text="${item.itemName}"/>
+                        <td th:text="${item.itemPrice}"/>
+                        <td th:text="${item.quantity}"/>
+                        <td th:text="${item.itemDescription}"/>
+
+                        <!-- Add update delete button-->
+                        <td sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" >
+                            <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+                                <a th:href="@{/shop/showFormForUpdateItem(itemId=${item.id})}" class="btn btn-info btn-sm">
+                                    Update
+                                </a>
+
+                                <a th:href="@{/shop/deleteItem(itemId=${item.id})}" class="btn btn-danger btn-sm"
+                                   onclick="if (!(confirm('Are you sure you want to delete this employee?'))) return false">
+                                    Delete
+                                </a>
+                            </div>
+                            <div sec:authorize="hasAuthority('ROLE_USER')">
+                                <a th:href="@{/shop/addItemToUser(userName=${#authentication.name},itemId=${item.id})}" class="btn btn-info btn-sm">
+                                    Add
+                                </a>
+                            </div>
+                        </td>
+                    </div>
+
+                    <div th:if="${item.quantity} == 0" sec:authorize="hasAuthority('ROLE_ADMIN')">
+                        <td th:text="${item.itemName}"/>
+                        <td th:text="${item.itemPrice}"/>
+                        <td th:text="${item.quantity}"/>
+                        <td th:text="${item.itemDescription}"/>
+
+                        <!-- Add update delete button-->
+                        <td sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" >
+                            <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+                                <a th:href="@{/shop/showFormForUpdateItem(itemId=${item.id})}" class="btn btn-info btn-sm">
+                                    Update
+                                </a>
+
+                                <a th:href="@{/shop/deleteItem(itemId=${item.id})}" class="btn btn-danger btn-sm"
+                                   onclick="if (!(confirm('Are you sure you want to delete this employee?'))) return false">
+                                    Delete
+                                </a>
+                            </div>
+                        </td>
+                    </div>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

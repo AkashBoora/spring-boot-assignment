@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <title>Fashion Fusion</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          th:href="@{/css/demo.css}"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="rounded-5 bg-success center" style="margin-left: ($spacer * .25) !important;">
+            <div class="p-4 mb-5 text-white"><h2>Fashion Fusion</h2></div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="row">
+                    <div class="col center">
+                        <a th:href="@{/shop/itemsList}" class="btn btn-info btn-sm" style="width: 150px;">
+                            Show Items
+                        </a>
+                    </div>
+                    <div class="col center">
+                        <a th:href="@{/login}" class="btn btn-danger btn-sm">
+                            Log in
+                        </a>
+                    </div>
+                    <div class="col center">
+                        <a th:href="@{/user/showFormForAddUser}" class="btn btn-info btn-sm">
+                            New User
+                        </a>
+                    </div>
+            </div>
+
+    </div>
+</body>
+</html>
