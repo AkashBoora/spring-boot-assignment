@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>User Orders</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          th:href="@{/css/demo.css}"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div class="center pt-5">
+        <h3>User Orders</h3>
+    </div>
+    <hr>
+    <!-- Add a button-->
+    <div sec:authorize="isAuthenticated()">
+        <a th:href="@{/shop/loginHome}"
+           class="btn btn-primary btn-sm mb-3">
+            Home
+        </a>
+        <a th:href="@{/shop/usersList}"
+           class="btn btn-primary btn-sm mb-3">
+            Back to User List
+        </a>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>Item Name</th>
+            <th>Quantity</th>
+            <th sec:authorize="hasAuthority('ROLE_USER')" >Action</th>
+        </tr>
+        </thead>
+        <tbody th:each="order : ${orders}">
+            <td th:text="${order.getItem().getItemName}"/>
+            <td th:text="${order.getQuantity}"/>
+
+            <!-- Add update delete button-->
+            <td sec:authorize="hasAuthority('ROLE_USER')" >
+                    <a th:href="@{/shop/deleteOrder(orderId=${order.id}, userName=${#authentication.name})}" class="btn btn-danger btn-sm"
+                       onclick="if (!(confirm('Are you sure Do you want to delete this order?'))) return false">
+                        Delete
+                    </a>
+            </td>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
