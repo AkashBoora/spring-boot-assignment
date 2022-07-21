@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Users List</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          th:href="@{/css/demo.css}"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div class="center pt-5">
+        <h3>Users List</h3>
+    </div>
+    <hr>
+    <!-- Add a button-->
+    <a th:href="@{/shop/loginHome}"
+       class="btn btn-primary btn-sm mb-3">
+        Home
+    </a>
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>User Name</th>
+            <th>Enabled</th>
+            <th>View Orders</th>
+        </tr>
+        </thead>
+        <tbody th:each="user : ${users}">
+        <td th:text="${user.userName}"/>
+        <td th:text="${user.enabled}"/>
+        <td>
+            <div class="col center">
+                <a th:href="@{/shop/userOrdersList(userName=${user.userName})}" class="btn btn-info btn-sm">
+                    View Orders
+                </a>
+            </div>
+        </td>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
